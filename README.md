@@ -10,4 +10,5 @@ We will make a Google Form, just know a Github repo with a build is needed.
 It is maintained by HAT and Mystery
 
 ## Is there an official Discord server?
-Yes! Here is the invite: 
+Yes! Here is the invite: https://discord.gg/Cx2hn8tE
+
