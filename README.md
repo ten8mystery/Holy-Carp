@@ -9,3 +9,5 @@ We will make a Google Form, just know a Github repo with a build is needed.
 ## Who owns this?
 It is maintained by HAT and Mystery
 
+## Is there an official Discord server?
+Yes! Here is the invite: 
