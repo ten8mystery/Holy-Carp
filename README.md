@@ -1,2 +1,3 @@
-###### HOLY CARP
-### The best of the best
+### Holy Carp
+
+A simple gaming website made in Google Sites.
