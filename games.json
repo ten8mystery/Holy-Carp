@@ -1,0 +1,37 @@
+[
+    {
+        "title": "Roblox",
+        "category": "Sandbox/MMO",
+        "url": "https://www.roblox.com/",
+        "iconUrl": "6366f1/ffffff?text=RBX",
+        "featured": true
+    },
+    {
+        "title": "Ultrakill",
+        "category": "FPS/Action",
+        "url": "https://cdn.jsdelivr.net/gh/gn-math/html@main/196.html",
+        "iconUrl": "ef4444/ffffff?text=KILL",
+        "featured": true
+    },
+    {
+        "title": "Slope",
+        "category": "Runner/Arcade",
+        "url": "https://slopegame.github.io/",
+        "iconUrl": "38bdf8/0f172a?text=SLOPE",
+        "featured": false
+    },
+    {
+        "title": "Geometry Dash Lite",
+        "category": "Rhythm/Platformer",
+        "url": "https://gd.absolllut.com/",
+        "iconUrl": "4f46e5/ffffff?text=DASH",
+        "featured": false
+    },
+    {
+        "title": "Rooftop Snipers",
+        "category": "Fighting/Physics",
+        "url": "https://rooftopsnipers.github.io/",
+        "iconUrl": "10b981/ffffff?text=SNIPERS",
+        "featured": false
+    }
+]
