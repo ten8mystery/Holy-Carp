@@ -1,87 +1,164 @@
+<!-- original-file: /mnt/data/index (2) (1).html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Holy Carp - Gaming Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Holy Carp — Gaming Launcher</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CDN (utilities) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css" />
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
 </head>
-<body class="font-sans">
+<body class="antialiased">
 
-    <div id="app-container" class="flex">
+  <div id="app" class="min-h-screen flex">
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-20 flex flex-col justify-between items-center py-6 bg-sidebar border-r">
+      <div class="w-full flex flex-col items-center gap-6">
+        <div id="logo" class="text-2xl font-extrabold text-accent">HC</div>
 
-        <!-- Sidebar -->
-        <aside class="w-16 flex flex-col justify-between border-r shadow-xl z-10">
-            <div class="flex flex-col items-center">
-                <div id="logo-text" class="w-full h-16 flex justify-center items-center text-3xl font-extrabold theme-accent-text">
-                    HC
-                </div>
+        <nav class="flex flex-col gap-4">
+          <button id="btn-home" class="nav-btn active" data-tab="home" aria-label="Home">🏠</button>
+          <button id="btn-games" class="nav-btn" data-tab="games" aria-label="Games">🎮</button>
+          <button id="btn-apps" class="nav-btn" data-tab="apps" aria-label="Apps">🧰</button>
+          <button id="btn-prxy" class="nav-btn" data-tab="prxy" aria-label="Proxy">🔒</button>
+        </nav>
+      </div>
 
-                <div class="space-y-4 pt-8">
-                    <a id="nav-home" onclick="showTab('home')" class="nav-icon active">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    </a>
+      <div class="w-full flex flex-col items-center gap-4">
+        <button id="btn-settings" class="nav-btn" data-tab="settings" aria-label="Settings">⚙️</button>
+      </div>
+    </aside>
 
-                    <a id="nav-games" onclick="showTab('games')" class="nav-icon">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-9 5.5l-.2.4.2.4A10 10 0 0 0 12 2z"></path><path d="M12 22a10 10 0 0 0 9-5.5l.2-.4-.2-.4A10 10 0 0 0 12 22z"></path><path d="M2 12a10 10 0 0 0 5.5 9l.4.2.4-.2A10 10 0 0 0 2 12z"></path><path d="M22 12a10 10 0 0 0-5.5-9l-.4-.2-.4.2A10 10 0 0 0 22 12z"></path><circle cx="12" cy="12" r="2"></circle></svg>
-                    </a>
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-auto">
+      <!-- HERO / HOME -->
+      <section id="home" class="page p-12">
+        <div class="hero grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <h1 class="display-heading">Holy Carp.</h1>
+            <p class="lead mb-6">
+              A clean, fast web launcher for your favourite browser games — instant play, beautiful UI, and smart fallbacks when sites block embedding.
+            </p>
 
-                    <a id="nav-apps" onclick="showTab('apps')" class="nav-icon">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                    </a>
-
-                    <a id="nav-prxy" onclick="showTab('prxy')" class="nav-icon">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    </a>
-                </div>
+            <div class="flex gap-4 items-center">
+              <button id="cta-play" class="btn-primary btn-lg">Start Gaming</button>
+              <button id="cta-browse" class="btn-ghost" onclick="showTab('games')">Browse Games</button>
             </div>
 
-            <div class="flex flex-col items-center space-y-4 pb-4">
-                <a id="nav-settings" onclick="showTab('settings')" class="nav-icon mb-4">
-                    <svg class="icon-svg" viewBox="0 0 24 24">
-                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                        <circle cx="12" cy="12" r="3" />
-                    </svg>
-                </a>
+            <div class="mt-8 flex gap-4">
+              <div class="stat">
+                <div class="stat-number" id="stat-games">—</div>
+                <div class="stat-label">Games</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number" id="stat-apps">—</div>
+                <div class="stat-label">Apps</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number" id="stat-online">Online</div>
+                <div class="stat-label">Status</div>
+              </div>
             </div>
-        </aside>
+          </div>
 
-        <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
-            <div class="px-16 py-12 h-full overflow-y-auto">
+          <div>
+            <!-- Trending carousel -->
+            <div class="card p-4">
+              <h3 class="card-title">Trending Now</h3>
 
-                <section id="home" class="content-section flex flex-col gap-12 h-full"></section>
-                <section id="games" class="content-section"></section>
-                <section id="apps" class="content-section"></section>
-                <section id="prxy" class="content-section"></section>
-                <section id="settings" class="content-section"></section>
+              <div id="trending-carousel" class="carousel relative mt-4">
+                <!-- JS will inject slides here -->
+                <button class="carousel-prev" aria-label="Previous">‹</button>
+                <button class="carousel-next" aria-label="Next">›</button>
+              </div>
 
+              <div class="mt-4 flex justify-end">
+                <a href="#" id="open-top" class="link">View all →</a>
+              </div>
             </div>
-        </main>
-    </div>
-
-    <!-- Modal -->
-    <div id="iframe-modal">
-        <div class="modal-content w-full h-full rounded-2xl flex flex-col overflow-hidden">
-            <div class="flex justify-between items-center p-4 shadow-lg flex-shrink-0">
-                <h2 id="modal-title" class="text-xl font-bold theme-accent-text"></h2>
-                <div id="modal-loading" class="text-sm text-yellow-400 flex items-center hidden">
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg"></svg>
-                    Fetching Content...
-                </div>
-                <button onclick="closeIframeModal()" class="modal-close-btn w-8 h-8 rounded-full">&times;</button>
-            </div>
-            <iframe id="game-iframe" src="" class="w-full flex-grow border-t" frameborder="0"></iframe>
+          </div>
         </div>
+
+        <!-- small animated background canvas -->
+        <canvas id="bg-canvas" class="bg-canvas" aria-hidden="true"></canvas>
+      </section>
+
+      <!-- GAMES PAGE -->
+      <section id="games" class="page p-8 hidden">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">All Games</h2>
+          <input id="game-search" class="input" placeholder="Search games..." oninput="filterCards(this,'game-list')" />
+        </div>
+
+        <div id="game-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+      </section>
+
+      <!-- APPS PAGE -->
+      <section id="apps" class="page p-8 hidden">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">Apps</h2>
+          <input id="app-search" class="input" placeholder="Search apps..." oninput="filterCards(this,'app-list')" />
+        </div>
+
+        <div id="app-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+      </section>
+
+      <!-- PRXY PAGE -->
+      <section id="prxy" class="page p-8 hidden">
+        <h2 class="text-2xl font-bold mb-4">Encrypted Access (Simulator)</h2>
+        <div class="card p-4">
+          <label class="block mb-2">Enter URL to open (simulated)</label>
+          <div class="flex gap-3">
+            <input id="proxy-url" class="input flex-1" placeholder="https://example.com" />
+            <button class="btn-primary" onclick="launchProxy()">GO</button>
+          </div>
+          <p class="text-sm mt-3 text-muted">This demo shows how a proxy would work. For real deployments you need a server-side proxy.</p>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings" class="page p-8 hidden">
+        <h2 class="text-2xl font-bold mb-4">Settings</h2>
+        <div id="theme-list" class="flex gap-4"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- IFRAME MODAL (plays games) -->
+  <div id="iframe-modal" class="iframe-modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="iframe-wrap">
+      <header class="iframe-header">
+        <div id="modal-title" class="modal-title">Playing</div>
+        <div class="modal-actions">
+          <button id="modal-open-new" class="link">Open in new tab</button>
+          <button id="modal-close" class="btn-ghost">✕</button>
+        </div>
+      </header>
+
+      <div id="iframe-body" class="iframe-body">
+        <div id="iframe-fallback" class="fallback hidden">
+          <div class="fallback-msg">
+            This site blocks embedding. You can open it in a new tab or use a server-side proxy.
+          </div>
+          <div class="fallback-actions mt-4">
+            <button id="fallback-open" class="btn-primary">Open in new tab</button>
+            <button id="fallback-copy" class="btn-ghost">Copy URL</button>
+          </div>
+        </div>
+
+        <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin allow-forms" src="" frameborder="0" class="game-iframe"></iframe>
+      </div>
     </div>
+  </div>
 
-    <!-- Script -->
-    <script src="script.js"></script>
-
+  <!-- load script -->
+  <script src="script.js" defer></script>
 </body>
 </html>
