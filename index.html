@@ -1,252 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Holy Carp - Gaming Dashboard</title>
-    <!-- Load Tailwind CSS -->
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Define default Tailwind configuration (used only for utility classes, not colors)
-        tailwind.config = {
-            theme: {
-                fontFamily: {
-                    sans: ['Inter', 'sans-serif'],
-                },
-            }
-        }
-    </script>
-    <style>
-        /* Global CSS Variables for Theme Overrides (Default: Deep Indigo Dark Mode) */
-        :root {
-            /* Base Colors */
-            --theme-background: #040816; 
-            --theme-sidebar-bg: #0f172a;
-            --theme-card-bg: #1e293b;
-            --theme-text-color: #cbd5e1;
-            --theme-text-color-rgb: 203, 213, 225;
-            
-            /* Accent Colors */
-            --theme-accent: #6366f1; 
-            --theme-secondary-accent: #38bdf8;
-        }
 
-        /* Base styles for the "desktop app" look */
-        body {
-            background-color: var(--theme-background); 
-            color: var(--theme-text-color); 
-            min-height: 100vh;
-            overflow: hidden; 
-        }
-
-        /* Radial gradient for the dark, ambient background */
-        #app-container {
-            position: relative;
-            /* Gradient now uses dynamic background and sidebar colors */
-            background: radial-gradient(at 50% 50%, var(--theme-sidebar-bg) 0%, var(--theme-background) 100%);
-            height: 100vh;
-            width: 100vw;
-        }
-        
-        /* Sidebar container style */
-        aside {
-            background-color: var(--theme-sidebar-bg);
-            border-color: rgba(var(--theme-text-color-rgb), 0.2); /* Use text color for subtle border */
-        }
-
-        /* Styling for the Left Sidebar Icons */
-        .nav-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 4rem;
-            height: 4rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            color: var(--theme-text-color); 
-            opacity: 0.7;
-        }
-
-        /* Active Sidebar Icon (uses the secondary accent color variable for the border) */
-        .nav-icon.active {
-            opacity: 1;
-            color: var(--theme-text-color);
-            background-color: var(--theme-card-bg);
-            border-left: 3px solid var(--theme-secondary-accent); 
-        }
-
-        .nav-icon:hover {
-            opacity: 1;
-            color: var(--theme-text-color);
-            background-color: var(--theme-card-bg);
-        }
-        
-        /* Content area transitions */
-        .content-section {
-            display: none;
-            padding: 3rem 4rem; 
-            animation: fadeIn 0.4s ease-out;
-            height: 100%;
-        }
-
-        /* Game/App Card Styling (Used for both) */
-        .game-card {
-            background-color: var(--theme-card-bg);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-        .game-card:hover {
-            transform: translateY(-4px);
-            /* Use CSS variable for dynamic accent glow on hover */
-            box-shadow: 0 0 15px var(--theme-accent); 
-        }
-
-        /* Glowing Button Effect (uses the accent color variable for background and shadow) */
-        .glowing-btn {
-            transition: all 0.3s;
-        }
-        .glowing-btn:hover {
-            /* Use CSS variable for dynamic hover glow */
-            box-shadow: 0 0 15px var(--theme-accent), 0 0 5px var(--theme-secondary-accent);
-        }
-        
-        /* Apply theme colors to specific non-Tailwind elements */
-        .theme-accent-text {
-            color: var(--theme-accent);
-        }
-        .theme-accent-bg {
-            background-color: var(--theme-accent);
-        }
-        
-        /* Input Fields */
-        .dashboard-input {
-            background-color: var(--theme-card-bg);
-            color: var(--theme-text-color);
-            border-color: var(--theme-card-bg);
-            transition: border-color 0.2s;
-        }
-        .dashboard-input:focus {
-             border-color: var(--theme-accent);
-             outline: none;
-        }
-
-        /* System Telemetry Box */
-        .system-telemetry-box {
-            background-color: var(--theme-card-bg);
-            /* Border and shadow colors are left fixed green for system status */
-        }
-        
-        /* Animation for smooth tab transitions */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Styling for the initial Home tab visibility */
-        #home { display: block; }
-
-        /* Icon Utility SVG (using inline SVG for self-containment) */
-        .icon-svg {
-            width: 28px;
-            height: 28px;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke: currentColor;
-        }
-
-        /* Modal specific styles */
-        #iframe-modal {
-            display: none; /* Controlled by JS */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); /* Fixed dark overlay */
-            z-index: 50;
-            backdrop-filter: blur(5px);
-            padding: 2rem;
-            animation: modalFadeIn 0.3s ease-out;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background-color: var(--theme-sidebar-bg); /* Uses theme variable */
-            border: 2px solid var(--theme-secondary-accent); 
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.5); 
-        }
-
-        .modal-close-btn {
-            transition: color 0.2s, background-color 0.2s;
-        }
-        .modal-close-btn:hover {
-            background-color: #ef4444; /* Fixed red on hover */
-            color: white;
-        }
-        
-        /* Theme Swatch Styling */
-        .theme-swatch {
-            transition: all 0.2s;
-            border: 3px solid transparent;
-        }
-        .theme-swatch:hover {
-            transform: scale(1.05);
-        }
-        .theme-swatch.active {
-            border-color: var(--theme-text-color); /* Active border uses current text color */
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body class="font-sans">
 
     <div id="app-container" class="flex">
 
-        <!-- 1. FIXED LEFT SIDEBAR (VERTICAL NAV) -->
-        <!-- Use custom CSS for dynamic background/border -->
+        <!-- Sidebar -->
         <aside class="w-16 flex flex-col justify-between border-r shadow-xl z-10">
-            <!-- Top Icons (Navigation) -->
             <div class="flex flex-col items-center">
-                <!-- Site Logo (HC uses the theme accent color via theme-accent-text class) -->
                 <div id="logo-text" class="w-full h-16 flex justify-center items-center text-3xl font-extrabold theme-accent-text">
                     HC
                 </div>
 
                 <div class="space-y-4 pt-8">
-                    <!-- Home Icon -->
                     <a id="nav-home" onclick="showTab('home')" class="nav-icon active">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     </a>
-                    
-                    <!-- Games Icon (Gamepad) -->
+
                     <a id="nav-games" onclick="showTab('games')" class="nav-icon">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-9 5.5l-.2.4.2.4A10 10 0 0 0 12 2z"></path><path d="M12 22a10 10 0 0 0 9-5.5l.2-.4-.2-.4A10 10 0 0 0 12 22z"></path><path d="M2 12a10 10 0 0 0 5.5 9l.4.2.4-.2A10 10 0 0 0 2 12z"></path><path d="M22 12a10 10 0 0 0-5.5-9l-.4-.2-.4.2A10 10 0 0 0 22 12z"></path><circle cx="12" cy="12" r="2"></circle></svg>
                     </a>
-                    
-                    <!-- Apps Icon (Grid/Apps) -->
+
                     <a id="nav-apps" onclick="showTab('apps')" class="nav-icon">
                         <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                     </a>
-                    
-                    <!-- Prxy Icon (Shield/Security) -->
+
                     <a id="nav-prxy" onclick="showTab('prxy')" class="nav-icon">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     </a>
                 </div>
             </div>
 
-            <!-- Bottom Settings Icon (Gear) -->
             <div class="flex flex-col items-center space-y-4 pb-4">
-                 <!-- Settings Icon (Replaces Themes) -->
                 <a id="nav-settings" onclick="showTab('settings')" class="nav-icon mb-4">
-                    <!-- Updated: Simple, unambiguous Gear SVG Icon -->
                     <svg class="icon-svg" viewBox="0 0 24 24">
                         <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
                         <circle cx="12" cy="12" r="3" />
@@ -255,570 +51,37 @@
             </div>
         </aside>
 
-        <!-- 2. MAIN CONTENT AREA -->
+        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto">
-            
-            <!-- Content Sections (Hidden/Shown based on Sidebar click) -->
             <div class="px-16 py-12 h-full overflow-y-auto">
-                
-                <!-- HOME Content - UPDATED STRUCTURE FOR FEATURED GAMES -->
-                <section id="home" class="content-section flex flex-col gap-12 h-full">
-                    
-                    <!-- 1. Main Header Area (Headline + Telemetry) -->
-                    <div class="flex flex-col lg:flex-row justify-between items-start gap-12">
-                        <div class="max-w-3xl">
-                            <h1 class="text-6xl font-extrabold mb-4 text-white">
-                                Welcome to 
-                                <!-- Uses theme-accent-text for dynamic color -->
-                                <span class="theme-accent-text tracking-wide block">Holy Carp.</span>
-                            </h1>
-                            <p class="text-xl mb-8 opacity-70">Game on! Check out the featured titles and system status below.</p>
 
-                            <!-- Uses theme-accent-bg for dynamic color -->
-                            <button id="home-start-btn" class="glowing-btn py-3 px-8 text-white font-bold rounded-xl text-lg hover:brightness-110 transition duration-300" onclick="showTab('games')" 
-                                    style="background-color: var(--theme-accent);">
-                                START GAMING
-                            </button>
-                        </div>
-                        
-                        <!-- System Info Box -->
-                        <div class="w-full lg:w-64 mt-4 lg:mt-0 flex-shrink-0">
-                            <!-- Use custom CSS class for themeable background -->
-                            <div class="system-telemetry-box text-sm p-4 rounded-xl text-green-400 font-mono shadow-xl border border-green-700" style="box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);">
-                                <!-- Use current text color for heading -->
-                                <p class="font-bold mb-3 pb-2" style="color: var(--theme-text-color); border-bottom: 1px solid rgba(var(--theme-text-color-rgb), 0.3);">System Telemetry</p>
-                                <div class="flex justify-between py-1">
-                                    <span>FPS:</span>
-                                    <span>120</span>
-                                </div>
-                                <div class="flex justify-between py-1">
-                                    <span>Latency:</span>
-                                    <span>5 ms</span>
-                                </div>
-                                <div class="flex justify-between py-1">
-                                    <span>Local Time:</span>
-                                    <span>07:45 PM</span>
-                                </div>
-                                <p class="text-xs mt-3 opacity-50 italic">Connected to Arcade Network.</p>
-                            </div>
-                        </div>
-                    </div>
+                <section id="home" class="content-section flex flex-col gap-12 h-full"></section>
+                <section id="games" class="content-section"></section>
+                <section id="apps" class="content-section"></section>
+                <section id="prxy" class="content-section"></section>
+                <section id="settings" class="content-section"></section>
 
-                    <!-- 2. Featured Games Area -->
-                    <div class="pt-4">
-                        <h2 class="text-3xl font-bold mb-4 opacity-90">Featured Games</h2>
-                        <div id="featured-games-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            <!-- Featured game cards will be rendered here by JS -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- GAMES Content -->
-                <section id="games" class="content-section">
-                    <!-- Text color is handled by body/root style -->
-                    <h1 class="text-4xl font-bold mb-6 pb-2" style="border-bottom: 1px solid rgba(var(--theme-text-color-rgb), 0.3);">All Games</h1>
-                    
-                    <!-- Search Input for Games - Use custom class for themeable input -->
-                    <input type="text" id="game-search" onkeyup="filterCards(this, 'game-list')" placeholder="Search games by title..."
-                           class="dashboard-input w-full p-3 mb-8 rounded-xl border-2 focus:ring focus:ring-opacity-50">
-
-                    <!-- Game Cards - Dynamically populated by JS -->
-                    <div id="game-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                        <!-- Content will be rendered here -->
-                    </div>
-                </section>
-
-                <!-- APPS Content - Now using the same grid layout -->
-                <section id="apps" class="content-section">
-                    <h1 class="text-4xl font-bold mb-6 pb-2" style="border-bottom: 1px solid rgba(var(--theme-text-color-rgb), 0.3);">Utility Applications</h1>
-
-                    <!-- Search Input for Apps - Use custom class for themeable input -->
-                    <input type="text" id="app-search" onkeyup="filterCards(this, 'app-list')" placeholder="Search applications by title..."
-                           class="dashboard-input w-full p-3 mb-8 rounded-xl border-2 focus:ring focus:ring-opacity-50">
-
-                    <!-- App Items - Dynamically populated by JS using card layout -->
-                    <div id="app-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                        <!-- Content will be rendered here -->
-                    </div>
-                </section>
-
-                <!-- PRXY Content -->
-                <section id="prxy" class="content-section">
-                    <h1 class="text-4xl font-bold mb-8 pb-2" style="border-bottom: 1px solid rgba(var(--theme-text-color-rgb), 0.3);">Encrypted Access</h1>
-                    <p class="text-lg mb-6 opacity-70 max-w-xl">Use our secure portal to reach external sites privately. Enter the URL below:</p>
-                    
-                    <div class="flex flex-col sm:flex-row gap-4 max-w-xl">
-                        <!-- Use custom class for themeable input -->
-                        <input type="url" id="proxy-url" placeholder="https://external-site.com" 
-                               class="dashboard-input flex-grow p-3 rounded-xl border-2"
-                               required>
-                        <!-- Uses theme-accent-bg for dynamic color -->
-                        <button onclick="launchProxy()" class="glowing-btn py-3 px-6 text-white font-bold rounded-xl transition duration-150" 
-                                style="background-color: var(--theme-accent);">
-                            GO SECURE
-                        </button>
-                    </div>
-
-                    <!-- Proxy Message Box -->
-                    <div id="proxy-message" class="mt-6 p-4 text-sm rounded-lg border border-red-700 bg-red-900/50 text-red-300 max-w-xl hidden">
-                        Note: Proxy is simulated. In a live environment, a backend service would process the request.
-                    </div>
-                </section>
-
-                <!-- SETTINGS Content (Replaces Themes, retains theme selection) -->
-                <section id="settings" class="content-section">
-                    <h1 class="text-4xl font-bold mb-8 pb-2" style="border-bottom: 1px solid rgba(var(--theme-text-color-rgb), 0.3);">Application Settings</h1>
-                    
-                    <p class="text-lg mb-8 opacity-70 max-w-xl">Customize your dashboard experience.</p>
-
-                    <!-- Theme Selection Sub-Section -->
-                    <div class="mb-10">
-                        <h2 class="text-2xl font-semibold mb-4 opacity-80">Interface Themes</h2>
-                        <p class="mb-6 opacity-70">Select a primary color scheme:</p>
-                        <div id="theme-list" class="flex flex-wrap gap-6">
-                            <!-- Themes will be rendered here by JavaScript -->
-                        </div>
-                    </div>
-
-                    <!-- General Settings Sub-Section -->
-                    <div>
-                        <h2 class="text-2xl font-semibold mb-4 opacity-80">General Options</h2>
-                        <div class="space-y-3">
-                            <label class="flex items-center space-x-3 text-lg opacity-70">
-                                <input type="checkbox" class="h-5 w-5 rounded-md" style="accent-color: var(--theme-accent);">
-                                <span>Enable High Contrast Mode</span>
-                            </label>
-                            <label class="flex items-center space-x-3 text-lg opacity-70">
-                                <input type="checkbox" class="h-5 w-5 rounded-md" style="accent-color: var(--theme-accent);" checked>
-                                <span>Show FPS Counter in Telemetry</span>
-                            </label>
-                        </div>
-                    </div>
-                </section>
             </div>
         </main>
     </div>
 
-    <!-- 3. IFRAME MODAL STRUCTURE -->
+    <!-- Modal -->
     <div id="iframe-modal">
         <div class="modal-content w-full h-full rounded-2xl flex flex-col overflow-hidden">
-            <!-- Modal Header -->
             <div class="flex justify-between items-center p-4 shadow-lg flex-shrink-0">
-                <!-- Uses theme-accent-text for dynamic color -->
                 <h2 id="modal-title" class="text-xl font-bold theme-accent-text"></h2>
-                
-                <!-- Loading Indicator is now used for the fetch operation -->
                 <div id="modal-loading" class="text-sm text-yellow-400 flex items-center hidden">
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg"></svg>
                     Fetching Content...
                 </div>
-                
-                <button onclick="closeIframeModal()" class="modal-close-btn w-8 h-8 rounded-full flex items-center justify-center font-bold" style="background-color: var(--theme-card-bg); color: var(--theme-text-color);">
-                    &times;
-                </button>
+                <button onclick="closeIframeModal()" class="modal-close-btn w-8 h-8 rounded-full">&times;</button>
             </div>
-            <!-- Modal Iframe Body -->
-            <iframe id="game-iframe" src="" class="w-full flex-grow border-t" style="border-color: var(--theme-card-bg);" frameborder="0"></iframe>
+            <iframe id="game-iframe" src="" class="w-full flex-grow border-t" frameborder="0"></iframe>
         </div>
     </div>
 
-    <!-- JavaScript for Data, Dynamic Rendering, and Functionality -->
-    <script>
-        // --- DATA STRUCTURES ---
-        
-        // Game data structure - ADDED 'featured' property
-        const gameData = [
-            { title: "Roblox", category: "Sandbox/MMO", url: "https://www.roblox.com/", iconUrl: "6366f1/ffffff?text=RBX", featured: true },
-            { title: "Ultrakill", category: "FPS/Action", url: "https://cdn.jsdelivr.net/gh/gn-math/html@main/196.html", iconUrl: "ef4444/ffffff?text=KILL", featured: true },
-            { title: "Slope", category: "Runner/Arcade", url: "https://slopegame.github.io/", iconUrl: "38bdf8/0f172a?text=SLOPE", featured: false },
-            { title: "Geometry Dash Lite", category: "Rhythm/Platformer", url: "https://gd.absolllut.com/", iconUrl: "4f46e5/ffffff?text=DASH", featured: false },
-            { title: "Rooftop Snipers", category: "Fighting/Physics", url: "https://rooftopsnipers.github.io/", iconUrl: "10b981/ffffff?text=SNIPERS", featured: false },
-        ];
+    <!-- Script -->
+    <script src="script.js"></script>
 
-        // App data structure
-        const appData = [
-            { title: "Scientific Calculator", category: "Utility", url: "https://web2.0calc.com/", iconUrl: "475569/ffffff?text=CALC" },
-            { title: "Text Editor / Notepad", category: "Productivity", url: "https://codepen.io/pen/", iconUrl: "34d399/ffffff?text=NOTE" },
-            { title: "Random Image Viewer", category: "Media", url: "https://picsum.photos/", iconUrl: "38bdf8/ffffff?text=VIEW" },
-            { title: "DNS Checker", category: "System", url: "https://dnschecker.org/", iconUrl: "f87171/ffffff?text=NET" },
-            { title: "Internet Speed Test", category: "System", url: "https://speed.cloudflare.com/", iconUrl: "6366f1/ffffff?text=TASK" },
-        ];
-        
-        // Theme configuration data
-        const themeData = [
-            // Default: Deep Indigo / Dark Mode
-            { id: 'indigo', name: 'Deep Indigo', accent: '#6366f1', secondary: '#38bdf8', background: '#040816', sidebarBg: '#0f172a', cardBg: '#1e293b', textColor: '#cbd5e1', textColorRgb: '203, 213, 225' }, 
-            // New: Cyber Green / Dark Mode with Green Accents
-            { id: 'green', name: 'Cyber Green', accent: '#10b981', secondary: '#34d399', background: '#0a0a0a', sidebarBg: '#1c1c1c', cardBg: '#2d2d2d', textColor: '#ccffcc', textColorRgb: '204, 255, 204' }, 
-            // New: Arctic White / Light Mode
-            { id: 'white', name: 'Arctic White', accent: '#3b82f6', secondary: '#2563eb', background: '#f8fafc', sidebarBg: '#ffffff', cardBg: '#e2e8f0', textColor: '#1e293b', textColorRgb: '30, 41, 59' },
-            // New: Crimson Surge / Dark Mode with Red Accents
-            { id: 'red', name: 'Crimson Surge', accent: '#ef4444', secondary: '#f87171', background: '#0a0a0a', sidebarBg: '#1c0a0a', cardBg: '#2d1414', textColor: '#fef2f2', textColorRgb: '254, 242, 242' },
-        ];
-        
-        let currentThemeId = localStorage.getItem('currentTheme') || 'indigo';
-
-
-        // --- DYNAMIC RENDERING FUNCTIONS ---
-
-        /**
-         * Renders the theme selection swatches in the Settings tab.
-         */
-        function renderThemes() {
-            const container = document.getElementById('theme-list');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const html = themeData.map(theme => {
-                // We use the accent color as the primary indicator for the swatch
-                // and the sidebar background color for the container.
-                return `
-                    <div id="theme-swatch-${theme.id}" 
-                         class="theme-swatch w-20 h-20 rounded-xl shadow-xl cursor-pointer flex items-center justify-center"
-                         style="background-color: ${theme.sidebarBg};"
-                         onclick="applyTheme('${theme.id}')"
-                         title="${theme.name}">
-                        <div class="w-10 h-10 rounded-full" style="background-color: ${theme.accent};"></div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = html;
-        }
-
-        /**
-         * Renders only the featured games in a dedicated section on the Home page.
-         */
-        function renderFeaturedGames() {
-            const container = document.getElementById('featured-games-list');
-            if (!container) return;
-            container.innerHTML = ''; 
-
-            const featured = gameData.filter(item => item.featured);
-
-            const html = featured.map(item => {
-                // Use a smaller, simpler placeholder for the list view
-                const placeholderImage = `https://placehold.co/40x40/${item.iconUrl}`;
-                
-                return `
-                    <div class="game-card flex items-center p-4 rounded-xl cursor-pointer hover:border-l-4 hover:pl-3 transition-all duration-200"
-                         style="border-color: var(--theme-secondary-accent);"
-                         data-title="${item.title}" 
-                         onclick="openIframeModal('${item.url}', '${item.title}')">
-                        <img src="${placeholderImage}" 
-                             onerror="this.src='https://placehold.co/40x40/1e293b/94a3b8?text=FG'" 
-                             alt="${item.title} Icon" class="w-10 h-10 object-cover rounded-md mr-4 flex-shrink-0"/>
-                        <div class="flex-grow">
-                            <h4 class="text-base font-semibold truncate" style="color: var(--theme-text-color);">${item.title}</h4>
-                            <p class="text-xs opacity-70">${item.category}</p>
-                        </div>
-                        <!-- Arrow icon -->
-                        <svg class="w-5 h-5 opacity-50 ml-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = html;
-        }
-
-        /**
-         * Generic function to render items as cards for either Games or Apps.
-         * @param {Array<Object>} data - The data array (gameData or appData).
-         * @param {string} containerId - The ID of the container element ('game-list' or 'app-list').
-         */
-        function renderCards(data, containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            container.innerHTML = ''; // Clear existing content
-
-            const html = data.map(item => {
-                // Construct the placeholder image URL for the card visual
-                const placeholderImage = `https://placehold.co/112x112/${item.iconUrl}`;
-                
-                return `
-                    <div class="game-card rounded-xl p-3 text-center cursor-pointer" 
-                         data-title="${item.title}" 
-                         onclick="openIframeModal('${item.url}', '${item.title}')">
-                        <div class="game-card-visual h-28 rounded-lg flex items-center justify-center mb-2 overflow-hidden" 
-                             style="background-color: var(--theme-sidebar-bg);">
-                            <!-- Using a placeholder image for visual appeal -->
-                            <img src="${placeholderImage}" 
-                                 onerror="this.src='https://placehold.co/112x112/1e293b/94a3b8?text=N/A'" 
-                                 alt="${item.title} Placeholder" class="w-full h-full object-cover rounded-lg"/>
-                        </div>
-                        <h3 class="text-lg font-semibold" style="color: var(--theme-text-color);">${item.title}</h3>
-                        <p class="text-xs opacity-70">${item.category}</p>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = html;
-        }
-
-        // Wrapper functions for clear initial calls
-        function renderGames() {
-            renderCards(gameData, 'game-list');
-        }
-        function renderApps() {
-            renderCards(appData, 'app-list');
-        }
-
-
-        // --- THEME FUNCTIONALITY ---
-
-        /**
-         * Applies the selected theme colors to the interface.
-         * @param {string} themeId - The ID of the theme to apply.
-         */
-        function applyTheme(themeId) {
-            const newTheme = themeData.find(t => t.id === themeId);
-            if (!newTheme) return;
-
-            // 1. Update BASE CSS variables for full interface change
-            document.documentElement.style.setProperty('--theme-background', newTheme.background);
-            document.documentElement.style.setProperty('--theme-sidebar-bg', newTheme.sidebarBg);
-            document.documentElement.style.setProperty('--theme-card-bg', newTheme.cardBg);
-            document.documentElement.style.setProperty('--theme-text-color', newTheme.textColor);
-            document.documentElement.style.setProperty('--theme-text-color-rgb', newTheme.textColorRgb); // For transparent borders
-
-            // 2. Update ACCENT CSS variables
-            document.documentElement.style.setProperty('--theme-accent', newTheme.accent);
-            document.documentElement.style.setProperty('--theme-secondary-accent', newTheme.secondary);
-
-            // 3. Update specific inline styles (Logo, Buttons)
-            const logoText = document.getElementById('logo-text');
-            if (logoText) {
-                logoText.style.color = newTheme.accent;
-            }
-            
-            // Update button colors and glow
-            const accentButtons = document.querySelectorAll('.glowing-btn');
-            accentButtons.forEach(btn => {
-                 btn.style.backgroundColor = newTheme.accent;
-                 btn.style.boxShadow = `0 0 10px ${newTheme.accent}aa`; 
-            });
-            
-            // Update modal title text color 
-            const modalTitle = document.getElementById('modal-title');
-            if (modalTitle) {
-                // The modal title uses the secondary accent
-                modalTitle.style.color = newTheme.secondary; 
-            }
-
-            // 4. Update Active state for theme swatches
-            document.querySelectorAll('.theme-swatch').forEach(swatch => {
-                swatch.classList.remove('active');
-            });
-            
-            const activeSwatch = document.getElementById(`theme-swatch-${themeId}`);
-            if (activeSwatch) {
-                activeSwatch.classList.add('active'); 
-            }
-
-            // 5. Store the new theme preference
-            currentThemeId = themeId;
-            localStorage.setItem('currentTheme', themeId);
-        }
-
-        // --- DASHBOARD FUNCTIONALITY ---
-
-        /**
-         * Function to switch the active content tab.
-         * @param {string} tabId - The ID of the content section to show (e.g., 'home', 'games').
-         */
-        function showTab(tabId) {
-            // Hide all content sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none';
-            });
-
-            // Remove 'active' class from all navigation links/icons
-            document.querySelectorAll('.nav-icon').forEach(link => {
-                link.classList.remove('active');
-            });
-
-            // Show the selected content section
-            const activeSection = document.getElementById(tabId);
-            if (activeSection) {
-                activeSection.style.display = 'block';
-            }
-
-            // Set 'active' class on the clicked navigation icon
-            const activeNav = document.getElementById(`nav-${tabId}`);
-            if (activeNav) {
-                activeNav.classList.add('active');
-            }
-        }
-
-        /**
-         * Filters game or app cards based on search input.
-         * @param {HTMLInputElement} input - The search input element.
-         * @param {string} containerId - The ID of the container holding the cards (e.g., 'game-list' or 'app-list').
-         */
-        function filterCards(input, containerId) {
-            const filter = input.value.toUpperCase();
-            const container = document.getElementById(containerId);
-            if (!container) return;
-
-            // The container holds the dynamically generated cards (which have the .game-card class)
-            const items = container.children; 
-
-            for (let i = 0; i < items.length; i++) {
-                const item = items[i];
-                // Read the title from the data-title attribute on the parent element
-                const title = item.getAttribute('data-title'); 
-                
-                if (title && title.toUpperCase().indexOf(filter) > -1) {
-                    item.style.display = ""; // Show element
-                } else {
-                    item.style.display = "none"; // Hide element
-                }
-            }
-        }
-        
-        /**
-         * Custom function to display error message inside the modal area.
-         */
-        function displayIframeError(title, message) {
-             const modalContent = document.querySelector('#iframe-modal .modal-content');
-             // Check if an error message already exists
-             let errorDiv = document.getElementById('iframe-error-message');
-             if (!errorDiv) {
-                 errorDiv = document.createElement('div');
-                 errorDiv.id = 'iframe-error-message';
-                 errorDiv.className = 'absolute inset-0 bg-red-900/90 text-red-100 p-8 flex flex-col items-center justify-center text-center backdrop-blur-sm z-10';
-                 modalContent.appendChild(errorDiv);
-             }
-
-             errorDiv.innerHTML = `
-                 <div class="text-3xl font-extrabold mb-4">LOAD FAILURE</div>
-                 <p class="text-xl mb-4">Game: <span class="theme-accent-text">${title}</span></p>
-                 <p class="mb-6">${message}</p>
-                 <p class="text-sm italic text-red-300">This often occurs when external websites prevent being embedded or fetched due to security policies (like CORS or X-Frame-Options).</p>
-             `;
-        }
-
-        /**
-         * Fetches raw HTML content from a URL and injects it into the iframe.
-         */
-        async function fetchAndLoadContent(url, title) {
-            const iframe = document.getElementById('game-iframe');
-            const loadingIndicator = document.getElementById('modal-loading');
-            
-            // Clear any previous error message
-            const oldError = document.getElementById('iframe-error-message');
-            if (oldError) oldError.remove();
-
-            iframe.src = 'about:blank'; // Clear previous content
-            loadingIndicator.classList.remove('hidden');
-
-            try {
-                // Attempt to fetch the content 
-                const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const rawHtml = await response.text();
-                
-                // Write the fetched content directly to the iframe
-                iframe.contentWindow.document.open();
-                iframe.contentWindow.document.write(rawHtml);
-                iframe.contentWindow.document.close();
-
-            } catch (error) {
-                // If fetch fails (likely CORS), display error and fall back to direct src load
-                displayIframeError(title, `Failed to load using internal fetch (CORS/Network error). Falling back to direct URL load...`);
-                
-                // Fallback to direct src method (more reliable for permissive external sites)
-                iframe.src = url; 
-            } finally {
-                loadingIndicator.classList.add('hidden');
-            }
-        }
-
-        /**
-         * Opens the full-screen iframe modal by calling the content loader.
-         * @param {string} url - The URL to load into the iframe.
-         * @param {string} title - The title for the modal header.
-         */
-        function openIframeModal(url, title) {
-            const modal = document.getElementById('iframe-modal');
-            const modalTitle = document.getElementById('modal-title');
-            
-            // Reset modal state
-            modalTitle.textContent = title;
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; 
-
-            // Call the content loading function 
-            fetchAndLoadContent(url, title);
-        }
-
-
-        /**
-         * Closes the full-screen iframe modal.
-         */
-        function closeIframeModal() {
-            const modal = document.getElementById('iframe-modal');
-            const iframe = document.getElementById('game-iframe');
-            
-            // Remove error message if it exists
-            const errorMessage = document.getElementById('iframe-error-message');
-            if (errorMessage) {
-                errorMessage.remove();
-            }
-
-            modal.style.display = 'none';
-            iframe.src = ''; // Stop any running content by clearing the source
-            document.body.style.overflow = 'auto'; // Re-enable background scrolling
-        }
-
-
-        /**
-         * Simulates launching a proxy connection.
-         */
-        function launchProxy() {
-            const urlInput = document.getElementById('proxy-url');
-            const messageBox = document.getElementById('proxy-message');
-            const url = urlInput.value.trim();
-
-            if (url) {
-                // Apply successful theme
-                messageBox.classList.remove('hidden', 'bg-red-900/50', 'text-red-300', 'border-red-700');
-                messageBox.classList.add('bg-green-900/50', 'text-green-300', 'border-green-700');
-                messageBox.textContent = `Establishing secure tunnel for: ${url}`;
-                
-                // Simulate loading/redirection
-                setTimeout(() => {
-                    messageBox.textContent = `Proxy launched. Content for ${url} would be displayed now.`;
-                }, 1500);
-
-            } else {
-                // Apply error theme
-                messageBox.classList.remove('hidden', 'bg-green-900/50', 'text-green-300', 'border-green-700');
-                messageBox.classList.add('bg-red-900/50', 'text-red-300', 'border-red-700');
-                messageBox.textContent = "Error: Please enter a valid URL (e.g., https://example.com).";
-            }
-        }
-
-        // Set the initial theme, tab on load, and render data
-        window.onload = () => {
-             // 1. RENDER themes FIRST so the swatch elements exist in the DOM.
-             renderThemes(); // Now defined above.
-             
-             // 2. Apply the stored theme (or default). This now safely targets the rendered swatches.
-             applyTheme(currentThemeId);
-             
-             // 3. Render other content
-             renderGames();
-             renderApps();
-             renderFeaturedGames(); // NEW: Render featured games
-             
-             // 4. Set initial tab
-             showTab('home');
-        }
-    </script>
 </body>
 </html>
