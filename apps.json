@@ -1,0 +1,32 @@
+[
+    {
+        "title": "Scientific Calculator",
+        "category": "Utility",
+        "url": "https://web2.0calc.com/",
+        "iconUrl": "475569/ffffff?text=CALC"
+    },
+    {
+        "title": "Text Editor / Notepad",
+        "category": "Productivity",
+        "url": "https://codepen.io/pen/",
+        "iconUrl": "34d399/ffffff?text=NOTE"
+    },
+    {
+        "title": "Random Image Viewer",
+        "category": "Media",
+        "url": "https://picsum.photos/",
+        "iconUrl": "38bdf8/ffffff?text=VIEW"
+    },
+    {
+        "title": "DNS Checker",
+        "category": "System",
+        "url": "https://dnschecker.org/",
+        "iconUrl": "f87171/ffffff?text=NET"
+    },
+    {
+        "title": "Internet Speed Test",
+        "category": "System",
+        "url": "https://speed.cloudflare.com/",
+        "iconUrl": "6366f1/ffffff?text=TASK"
+    }
+]
